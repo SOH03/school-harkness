@@ -75,16 +75,18 @@ export function useAuthUser() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!firebaseEnabled || !auth || !db) {
+    const a = auth;
+    const database = db;
+    if (!firebaseEnabled || !a || !database) {
       setLoading(false);
       return;
     }
-    const unsub = onAuthStateChanged(auth, async (u) => {
+    const unsub = onAuthStateChanged(a, async (u) => {
       setUser(u);
       if (u) {
         try {
-          const snap = await getDoc(doc(db, "admins", u.uid));
-          setIsAdmin(snap.exists() && snap.data().admin === true);
+          const snap = await getDoc(doc(database, "admins", u.uid));
+          setIsAdmin(snap.exists() && snap.data()?.admin === true);
         } catch {
           setIsAdmin(false);
         }
