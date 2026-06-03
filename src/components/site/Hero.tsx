@@ -1,6 +1,7 @@
-import building from "@/assets/school-building.png";
+import { useLandingPhoto } from "@/lib/use-firebase-data";
 
 export function Hero() {
+  const building = useLandingPhoto();
   return (
     <section id="home" className="relative overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 pt-12 pb-24 md:pt-20 md:pb-32 grid md:grid-cols-2 gap-12 items-center">
@@ -8,9 +9,7 @@ export function Hero() {
           <img
             src={building}
             alt="Our school building"
-            width={1024}
-            height={768}
-            className="w-full max-w-md mx-auto drop-shadow-[0_20px_40px_rgba(200,30,30,0.25)]"
+            className="w-full max-w-md mx-auto drop-shadow-[0_20px_40px_rgba(200,30,30,0.25)] rounded-lg object-cover"
           />
         </div>
         <div className="order-1 md:order-2 text-center md:text-right">
