@@ -10,7 +10,7 @@ export function Nav() {
       <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
         <a href="#home" className="flex items-center gap-2">
           <span className="inline-block h-3 w-3 rounded-full bg-primary" />
-          <span className="font-display text-lg tracking-tight">BATCH/20</span>
+          <span className="font-display text-lg tracking-tight">NGHS · BATCH/21</span>
         </a>
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
           {links.map((l) => (

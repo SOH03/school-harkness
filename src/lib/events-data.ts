@@ -20,11 +20,11 @@ export type EventItem = {
 // Fallback data used when Firestore isn't configured.
 export const sampleEvents: EventItem[] = [
   {
-    id: "farewell-2020",
-    slug: "farewell-2020",
-    year: "2020",
+    id: "farewell-2021",
+    slug: "farewell-2021",
+    year: "2021",
     title: "Farewell Day",
-    date: "March 2020",
+    date: "March 2021",
     description:
       "The last assembly, the last bell. Tears, hugs, and a promise to never lose touch.",
     cover: g6,
@@ -66,7 +66,7 @@ export const sampleEvents: EventItem[] = [
     cover: g4,
     photos: [
       { id: "1", url: g4, caption: "Annual cultural night" },
-      { id: "2", url: g1, caption: "Graduation, 2020" },
+      { id: "2", url: g1, caption: "Graduation, 2021" },
     ],
   },
 ];

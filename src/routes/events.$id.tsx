@@ -11,10 +11,10 @@ export const Route = createFileRoute("/events/$id")({
   },
   head: ({ loaderData }) => ({
     meta: [
-      { title: `${loaderData?.fallback?.title ?? "Event"} — Batch 2020` },
+      { title: `${loaderData?.fallback?.title ?? "Event"} — NGHS Batch 2021` },
       {
         name: "description",
-        content: loaderData?.fallback?.description ?? "Event from the Batch 2020 archive.",
+        content: loaderData?.fallback?.description ?? "Event from the NGHS Batch 2021 archive.",
       },
     ],
   }),

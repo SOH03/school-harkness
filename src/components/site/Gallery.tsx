@@ -6,7 +6,7 @@ import g5 from "@/assets/gallery-5.jpg";
 import g6 from "@/assets/gallery-6.jpg";
 
 const photos = [
-  { src: g1, alt: "Graduation day group photo", caption: "Graduation, 2020", span: "row-span-2" },
+  { src: g1, alt: "Graduation day group photo", caption: "Graduation, 2021", span: "row-span-2" },
   { src: g2, alt: "Classroom laughter", caption: "Last day of class", span: "" },
   { src: g3, alt: "Sports day", caption: "Sports Day finals", span: "" },
   { src: g4, alt: "Cultural program", caption: "Annual cultural night", span: "row-span-2" },
