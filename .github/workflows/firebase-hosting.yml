@@ -9,6 +9,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,8 +32,5 @@ jobs:
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_NGHS21_6F414 }}"
-          channelId: live
-          projectId: nghs21-6f414
-        env:
-          FIREBASE_CLI_EXPERIMENTS: webframeworks
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_NGHS_2021 }}"
+          projectId: nghs-2021
