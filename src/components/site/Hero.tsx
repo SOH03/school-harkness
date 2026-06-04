@@ -13,7 +13,7 @@ export function Hero() {
           />
         </div>
         <div className="order-1 md:order-2 text-center md:text-right">
-          <p className="text-sm md:text-base uppercase tracking-[0.25em] text-foreground/90 font-semibold mb-3">
+          <p className="text-xl md:text-3xl lg:text-4xl uppercase tracking-[0.15em] text-foreground font-extrabold mb-3">
             Nilphamari Govt High School
           </p>
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4">
