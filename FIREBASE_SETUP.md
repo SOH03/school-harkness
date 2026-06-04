@@ -12,11 +12,15 @@ This site uses **Firebase** for the database (events, captions, landing photo) a
    `nghs2021.web.app`). If the name is taken, pick any project ID — you can
    alias it later via Hosting sites.
 
+> **Note:** If you already have a project (e.g. `nghs21-6f414`), you can use
+> that too. Just update `firebase.json` and the GitHub Actions workflow with
+> your actual project ID.
+
 ---
 
 ## 2. Enable the services we use
 
-In the Firebase console for project `nghs2021`:
+In the Firebase console for your project:
 
 - **Build → Authentication → Get started → Sign-in method**
   → enable **Email/Password**.
@@ -108,50 +112,91 @@ the event detail page at `/events/<slug>`.
 
 ```bash
 bun install
-bun run build
+bun run build:firebase
 ```
 
-The production output lands in `dist/` (or `.output/public/` for TanStack
-Start — verify which folder is produced; that's your "public" folder below).
+This command:
+1. Builds the app with `vite build`
+2. Starts the SSR server locally
+3. Fetches the HTML for `/` and saves it to `dist/client/index.html`
+4. The result in `dist/client/` is a static site ready for Firebase Hosting
 
 ---
 
-## 8. Host on `nghs2021.web.app`
+## 8. Set up GitHub Actions for automatic deployment
 
-Install the Firebase CLI once:
+This project includes a ready-to-use GitHub Actions workflow that automatically
+builds and deploys to Firebase Hosting on every push to `main` or `master`.
+
+### 8.1 Connect your repo to GitHub
+
+If you haven't already:
+1. In Lovable, click the **+** button → **GitHub** → **Connect project**
+2. Authorize GitHub and create the repository
+
+### 8.2 Get a Firebase service account
+
+1. In the Firebase console, click the **gear icon** → **Project settings**.
+2. Go to the **Service accounts** tab.
+3. Click **Generate new private key**.
+4. A `.json` file will download. Open it and copy the entire contents.
+
+### 8.3 Add the secret to GitHub
+
+1. Go to your GitHub repo → **Settings** → **Secrets and variables** → **Actions**.
+2. Click **New repository secret**.
+3. **Name:** `FIREBASE_SERVICE_ACCOUNT_NGHS21_6F414`
+   (replace `NGHS21_6F414` with your actual project ID in UPPERCASE, replacing
+   hyphens with underscores)
+4. **Value:** Paste the entire contents of the downloaded `.json` file.
+5. Click **Add secret**.
+
+### 8.4 Update `firebase.json` (if needed)
+
+Open `firebase.json` and make sure the project IDs match yours:
+
+```json
+{
+  "hosting": {
+    "site": "nghs2021",
+    "public": "dist/client",
+    ...
+  }
+}
+```
+
+- If your Firebase project ID is `nghs21-6f414`, keep `"site": "nghs2021"` as your
+  custom hosting site alias (create it in Firebase console → Hosting → Add custom site).
+- If your project ID is different, update `.github/workflows/firebase-hosting.yml`
+  with your actual `projectId`.
+
+### 8.5 Push and deploy
+
+```bash
+git add .
+git commit -m "Setup Firebase Hosting with GitHub Actions"
+git push origin main
+```
+
+Go to **GitHub → Actions** and watch the workflow run. Once it completes,
+your site will be live at:
+- `https://nghs2021.web.app` (or your custom site URL)
+- `https://nghs21-6f414.web.app` (default project URL)
+
+### 8.6 First-time manual deploy (optional)
+
+If GitHub Actions fails the first time, you may need to enable Hosting in the
+Firebase console first:
 
 ```bash
 npm i -g firebase-tools
 firebase login
-```
-
-Initialize hosting **inside the project folder**:
-
-```bash
 firebase init hosting
-```
-
-Answers:
-
-- Use existing project → **`nghs2021`**
-- Public directory → **`dist`** (or whatever folder `bun run build` produced)
-- Single-page app? → **Yes**
-- Set up automatic builds with GitHub? → optional
-- Overwrite `index.html`? → **No**
-
-Deploy:
-
-```bash
-bun run build
+# Select your project, use dist/client as public directory, say Yes to SPA
 firebase deploy --only hosting
 ```
 
-Your site is live at **<https://nghs2021.web.app>** and
-<https://nghs2021.firebaseapp.com>.
-
-### Custom domain (optional)
-
-Firebase console → **Hosting → Add custom domain** → follow the DNS steps.
+After this, GitHub Actions should work on subsequent pushes.
 
 ---
 
@@ -163,7 +208,26 @@ Firebase console → **Hosting → Add custom domain** → follow the DNS steps.
 | Add an event | `/admin` → Create event |
 | Add photos + captions to an event | `/admin` → open event card |
 | Promote another admin | Firestore → `admins/{their-uid}` = `{ admin: true }` |
-| Re-deploy after content code changes | `bun run build && firebase deploy --only hosting` |
+| Deploy code changes | Just push to `main` — GitHub Actions handles it |
+| Deploy manually (emergency) | `bun run build:firebase && firebase deploy --only hosting` |
 
 Content changes made via `/admin` are **live instantly** — no rebuild needed.
 Only code/UI changes require a redeploy.
+
+---
+
+## Troubleshooting
+
+**Build fails with "Server did not start within 10s"**
+→ Make sure you built first with `bun run build` before running `bun run scripts/prerender.js`.
+
+**GitHub Actions fails with "Permission denied"**
+→ Check that the `FIREBASE_SERVICE_ACCOUNT_*` secret name matches your project ID
+exactly (uppercase, underscores instead of hyphens).
+
+**Firebase Hosting shows 404 for `/events/...` or `/admin`**
+→ The `firebase.json` rewrite rules should handle this. Make sure you pushed the
+latest `firebase.json` to GitHub.
+
+**Images or CSS not loading**
+→ Make sure `firebase.json` points `"public"` to `"dist/client"` and not just `"dist"`.
