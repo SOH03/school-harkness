@@ -26,16 +26,6 @@ export function Hero() {
             More Than a Batch, A Bond Forever.
           </p>
         </div>
-          <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4">
-            Class of 2021 · Community Archive
-          </p>
-          <h1 className="font-display text-[20vw] md:text-[12rem] leading-[0.85] text-primary">
-            BATCH<br />2021
-          </h1>
-          <p className="font-serif italic text-2xl md:text-3xl mt-6 text-foreground/80">
-            More Than a Batch, A Bond Forever.
-          </p>
-        </div>
       </div>
       <div className="border-t border-border">
         <div className="mx-auto max-w-4xl px-6 py-10 text-center">
