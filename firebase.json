@@ -1,19 +1,14 @@
 {
   "hosting": {
-    "site": "nghs2021",
     "public": "dist/client",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
     "rewrites": [
       {
-        "source": "/events/**",
-        "destination": "/index.html"
-      },
-      {
-        "source": "/admin",
-        "destination": "/index.html"
-      },
-      {
-        "source": "/admin/**",
+        "source": "**",
         "destination": "/index.html"
       }
     ],
