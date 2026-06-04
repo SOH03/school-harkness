@@ -9,10 +9,10 @@ import { Footer } from "@/components/site/Footer";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Batch 2020 — Community Archive" },
-      { name: "description", content: "More than a batch, a bond forever. The community archive of events, reunions, and memories of the Class of 2020." },
-      { property: "og:title", content: "Batch 2020 — Community Archive" },
-      { property: "og:description", content: "Events, reunions and memories from the Class of 2020." },
+      { title: "Nilphamari Govt High School — Batch 2021" },
+      { name: "description", content: "More than a batch, a bond forever. The community archive of events, reunions, and memories of Nilphamari Govt High School Class of 2021." },
+      { property: "og:title", content: "Nilphamari Govt High School — Batch 2021" },
+      { property: "og:description", content: "Events, reunions and memories from the NGHS Class of 2021." },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },

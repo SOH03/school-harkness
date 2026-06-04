@@ -25,7 +25,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
 export const Route = createFileRoute("/admin")({
-  head: () => ({ meta: [{ title: "Admin — Batch 2020" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Admin — NGHS Batch 2021" }, { name: "robots", content: "noindex" }] }),
   component: AdminPage,
 });
 
@@ -241,7 +241,7 @@ function NewEvent({ onCreated }: { onCreated: () => void }) {
 
   return (
     <form onSubmit={submit} className="rounded-md border border-border p-4 grid md:grid-cols-2 gap-3">
-      <Input placeholder="slug (url id, e.g. farewell-2020)" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} required />
+      <Input placeholder="slug (url id, e.g. farewell-2021)" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} required />
       <Input placeholder="title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} required />
       <Input placeholder="year (e.g. 2024)" value={form.year} onChange={(e) => setForm({ ...form, year: e.target.value })} />
       <Input placeholder="date (e.g. March 2024)" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
