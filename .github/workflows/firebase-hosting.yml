@@ -34,3 +34,4 @@ jobs:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_NGHS_2021 }}"
           projectId: nghs-2021
+          channelId: live
