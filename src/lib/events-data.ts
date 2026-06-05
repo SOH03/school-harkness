@@ -20,13 +20,13 @@ export type EventItem = {
 // Fallback data used when Firestore isn't configured.
 export const sampleEvents: EventItem[] = [
   {
-    id: "farewell-2021",
-    slug: "farewell-2021",
-    year: "2021",
-    title: "Farewell Day",
-    date: "March 2021",
+    id: "iftar-2025",
+    slug: "iftar-2025",
+    year: "2025",
+    title: "Iftar party",
+    date: "March 2025",
     description:
-      "The last assembly, the last bell. Tears, hugs, and a promise to never lose touch.",
+      "An evening of faith, friendship, and togetherness.🌙",
     cover: g6,
     photos: [
       { id: "1", url: g6, caption: "Farewell, see you soon" },
@@ -34,35 +34,35 @@ export const sampleEvents: EventItem[] = [
     ],
   },
   {
-    id: "reunion-2022",
-    slug: "reunion-2022",
-    year: "2022",
-    title: "First Reunion",
-    date: "December 2022",
+    id: "reunion-2021",
+    slug: "reunion-2021",
+    year: "2021",
+    title: "Batch Reunion",
+    date: "one-day in 2021",
     description:
-      "Two years later, a small picnic by the riverside became the beginning of a tradition.",
+      "Different years, same faces, same friendship. Batch 21, together through time.",
     cover: g5,
     photos: [{ id: "1", url: g5, caption: "Reunion dinner, 2023" }],
   },
   {
-    id: "cricket-2023",
-    slug: "cricket-2023",
-    year: "2023",
-    title: "Cricket Tournament",
-    date: "October 2023",
+    id: "cricket-2026",
+    slug: "cricket-2026",
+    year: "2026",
+    title: "Futsal Tournament",
+    date: "May 2026",
     description:
-      "Old rivalries on a new pitch. Section A vs Section B — the rematch we waited for.",
+      "Solitary Wolves,Champion - NGHS Batch'21 Futsal Tournament, Season 1",
     cover: g3,
-    photos: [{ id: "1", url: g3, caption: "Sports Day finals" }],
+    photos: [{ id: "1", url: g3, caption: "Tournament  Day finals" }],
   },
   {
-    id: "iftar-2024",
-    slug: "iftar-2024",
-    year: "2024",
+    id: "iftar-2026",
+    slug: "iftar-2026",
+    year: "2026",
     title: "Iftar Gathering",
-    date: "April 2024",
+    date: "March 2026",
     description:
-      "Breaking fast together, exchanging stories — the kind of evening you don't want to end.",
+      "Breaking fast together, exchanging stories — the kind of event you don't want to end.",
     cover: g4,
     photos: [
       { id: "1", url: g4, caption: "Annual cultural night" },
