@@ -21,12 +21,13 @@ import { getFirestore, type Firestore } from "firebase/firestore";
 import { getStorage, type FirebaseStorage } from "firebase/storage";
 
 const config = {
-  apiKey: "AIzaSyCRS-FtHwO-DLhVI_9WpkvZCCBk9IEQk0",
+  apiKey: "AIzaSyCRS-FtHwO-DLhVI_9WpkWvZCCBk9IEQk0",
   authDomain: "nghs-2021.firebaseapp.com",
   projectId: "nghs-2021",
-  storageBucket: "nghs-2021.appspot.com",
+  storageBucket: "nghs-2021.firebasestorage.app",
   messagingSenderId: "24116688774",
-  appId: "1:24116688774:web:f337dfbfce67a38c5d5e07"
+  appId: "1:24116688774:web:f337dfbfce67a38c5d5e07",
+  measurementId: "G-S6HGX44Y23"
 };
 
 export const firebaseEnabled = Boolean(config.apiKey && config.projectId);
