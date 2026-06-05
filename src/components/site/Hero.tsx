@@ -23,7 +23,7 @@ export function Hero() {
             BATCH<br />2021
           </h1>
           <p className="font-serif italic text-2xl md:text-3xl mt-6 text-foreground/80">
-            Together We Learn, Forever We Belong.
+            Twenty-One: Together, Tied & Triumphant.
           </p>
         </div>
       </div>
