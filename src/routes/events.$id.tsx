@@ -51,14 +51,12 @@ function EventDetail() {
         </header>
 
         {event.cover && (
-         <div className="w-full aspect-video mb-12 overflow-hidden rounded-lg bg-muted">
          <img
-            src={event.cover}
-            alt={event.title}
-            className="w-full h-full object-cover object-center"
-             />
-           </div>
-            )}
+           src={event.cover}
+           alt={event.title}
+         className="w-full rounded-lg mb-12 object-contain bg-muted"
+         />
+         )}
 
         <section>
           <h2 className="font-display text-3xl md:text-4xl mb-6">Photos</h2>
