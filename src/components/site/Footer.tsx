@@ -5,11 +5,11 @@ export function Footer() {
         <div>
           <p className="font-display text-2xl text-primary">NGHS · BATCH / 2021</p>
           <p className="text-sm text-muted-foreground mt-1">
-            Nilphamari Govt High School — a community archive, kept by the class itself.
+            Nilphamari Govt High School — a Batch archive, kept by the class itself.
           </p>
         </div>
         <p className="text-xs uppercase tracking-widest text-muted-foreground">
-          © {new Date().getFullYear()} · Made with care by batchmates
+          © {new Date().getFullYear()} · Made with care by SOH03
         </p>
       </div>
     </footer>
