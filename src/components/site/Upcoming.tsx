@@ -10,10 +10,10 @@ export function Upcoming() {
               Coming Up Next
             </p>
             <h2 className="font-display text-5xl md:text-7xl leading-[0.9] text-primary">
-              5-Year<br />Reunion
+              EID<br />Reunion
             </h2>
             <p className="font-serif italic text-2xl mt-6 text-background/80">
-              A whole weekend, just like old times.
+              Reuniting our batch, reliving memories.
             </p>
           </div>
 
@@ -22,21 +22,22 @@ export function Upcoming() {
               <Calendar className="h-6 w-6 text-primary shrink-0 mt-1" />
               <div>
                 <p className="text-xs uppercase tracking-widest text-background/60 mb-1">When</p>
-                <p className="text-xl">December 26 – 28, 2026</p>
+                <p className="text-xl">Eid Al-Fitr 2027</p>
               </div>
             </div>
             <div className="border-t border-background/20 pt-6 flex items-start gap-5">
               <MapPin className="h-6 w-6 text-primary shrink-0 mt-1" />
               <div>
                 <p className="text-xs uppercase tracking-widest text-background/60 mb-1">Where</p>
-                <p className="text-xl">School Auditorium &amp; Resort, Nilphamari</p>
+                <p className="text-xl">High school Ground, Nilphamari</p>
               </div>
             </div>
             <div className="border-t border-background/20 pt-6 flex items-start gap-5">
               <Users className="h-6 w-6 text-primary shrink-0 mt-1" />
               <div>
                 <p className="text-xs uppercase tracking-widest text-background/60 mb-1">Who</p>
-                <p className="text-xl">All batchmates, partners, and kids welcome</p>
+                <p className="text-xl">All Batchmates</p>
+          
               </div>
             </div>
 
