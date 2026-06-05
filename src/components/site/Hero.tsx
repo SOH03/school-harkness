@@ -17,7 +17,7 @@ export function Hero() {
             Nilphamari Govt High School
           </p>
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4">
-            Class of 2021 · Community Archive
+            Class of 2021 · Batch Archive
           </p>
           <h1 className="font-display text-[20vw] md:text-[12rem] leading-[0.85] text-primary">
             BATCH<br />2021
