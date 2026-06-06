@@ -1,20 +1,35 @@
+import { useEffect, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import g1 from "@/assets/gallery-1.jpg";
 import g2 from "@/assets/gallery-2.jpg";
 import g3 from "@/assets/gallery-3.jpg";
 import g4 from "@/assets/gallery-4.jpg";
 import g5 from "@/assets/gallery-5.jpg";
 import g6 from "@/assets/gallery-6.jpg";
+import { PhotoLightbox } from "./PhotoLightbox";
 
 const photos = [
-  { src: g1, alt: "Graduation day group photo", caption: "Graduation, 2021", span: "row-span-2" },
-  { src: g2, alt: "Classroom laughter", caption: "Last day of class", span: "" },
-  { src: g3, alt: "Sports day", caption: "Sports Day finals", span: "" },
-  { src: g4, alt: "Cultural program", caption: "Annual cultural night", span: "row-span-2" },
-  { src: g5, alt: "Friends reunion dinner", caption: "Reunion dinner, 2023", span: "" },
-  { src: g6, alt: "Farewell hug", caption: "Farewell, see you soon", span: "" },
+  { url: g1, caption: "Graduation, 2021" },
+  { url: g2, caption: "Last day of class" },
+  { url: g3, caption: "Sports Day finals" },
+  { url: g4, caption: "Annual cultural night" },
+  { url: g5, caption: "Reunion dinner, 2023" },
+  { url: g6, caption: "Farewell, see you soon" },
 ];
 
 export function Gallery() {
+  const [i, setI] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [openLightbox, setOpenLightbox] = useState(false);
+
+  useEffect(() => {
+    if (paused || openLightbox) return;
+    const t = setInterval(() => setI((p) => (p + 1) % photos.length), 4000);
+    return () => clearInterval(t);
+  }, [paused, openLightbox]);
+
+  const current = photos[i];
+
   return (
     <section id="gallery" className="border-t border-border">
       <div className="mx-auto max-w-7xl px-6 py-20 md:py-28">
@@ -25,30 +40,72 @@ export function Gallery() {
             </p>
             <h2 className="font-display text-5xl md:text-7xl">Gallery</h2>
           </div>
-          <a href="#" className="hidden md:inline text-sm underline underline-offset-4 hover:text-primary">
-            View all photos →
-          </a>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 auto-rows-[180px] md:auto-rows-[240px] gap-3 md:gap-4">
-          {photos.map((p, i) => (
+        <div
+          className="relative mx-auto max-w-3xl"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+        >
+          <button
+            onClick={() => setOpenLightbox(true)}
+            className="block w-full group"
+            aria-label="View photo"
+          >
             <figure
               key={i}
-              className={`relative overflow-hidden rounded-lg group bg-muted ${p.span}`}
+              className="relative overflow-hidden rounded-xl bg-muted shadow-[0_30px_60px_-20px_rgba(0,0,0,0.35)] animate-fade-in"
+              style={{ animation: "fade-in 0.6s ease-out, float 6s ease-in-out infinite" }}
             >
               <img
-                src={p.src}
-                alt={p.alt}
-                loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                src={current.url}
+                alt={current.caption}
+                className="w-full aspect-[4/3] object-cover transition-transform duration-700 group-hover:scale-[1.02]"
               />
-              <figcaption className="absolute inset-x-0 bottom-0 p-3 md:p-4 bg-gradient-to-t from-black/70 to-transparent text-white text-xs md:text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                {p.caption}
-              </figcaption>
             </figure>
-          ))}
+          </button>
+
+          <p className="mt-5 text-center font-serif italic text-lg md:text-xl text-foreground/80">
+            {current.caption}
+          </p>
+
+          <button
+            aria-label="Previous photo"
+            onClick={() => setI((p) => (p - 1 + photos.length) % photos.length)}
+            className="absolute left-2 md:-left-6 top-1/3 -translate-y-1/2 h-10 w-10 grid place-items-center rounded-full bg-background/80 hover:bg-background border border-border shadow"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+          <button
+            aria-label="Next photo"
+            onClick={() => setI((p) => (p + 1) % photos.length)}
+            className="absolute right-2 md:-right-6 top-1/3 -translate-y-1/2 h-10 w-10 grid place-items-center rounded-full bg-background/80 hover:bg-background border border-border shadow"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
+
+          <div className="mt-6 flex items-center justify-center gap-2">
+            {photos.map((_, n) => (
+              <button
+                key={n}
+                onClick={() => setI(n)}
+                aria-label={`Go to photo ${n + 1}`}
+                className={`h-2 rounded-full transition-all ${
+                  n === i ? "w-8 bg-primary" : "w-2 bg-muted-foreground/40 hover:bg-muted-foreground"
+                }`}
+              />
+            ))}
+          </div>
         </div>
       </div>
+
+      <PhotoLightbox
+        photos={photos}
+        index={i}
+        onIndexChange={(n) => setI(((n % photos.length) + photos.length) % photos.length)}
+        open={openLightbox}
+        onOpenChange={setOpenLightbox}
+      />
     </section>
   );
 }
