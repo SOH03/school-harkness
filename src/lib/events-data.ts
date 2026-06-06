@@ -53,8 +53,7 @@ export const sampleEvents: EventItem[] = [
     description:
       "Solitary Wolves,Champion - NGHS Batch'21 Futsal Tournament, Season 1",
     cover: g3,
-    photos: [{ id: "1", url: g3, caption: "Tournament Champions 
-      " }],
+    photos: [{ id: "1", url: g3, caption: "Tournament Champions " }],
   },
   {
     id: "iftar-2026",
