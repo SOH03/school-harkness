@@ -53,16 +53,17 @@ export function Gallery() {
             aria-label="View photo"
           >
             <figure
-              key={i}
-              className="relative overflow-hidden rounded-xl bg-muted shadow-[0_30px_60px_-20px_rgba(0,0,0,0.35)] animate-fade-in"
+             key={i}
+               className="relative overflow-hidden rounded-xl bg-muted shadow-[0_30px_60px_-20px_rgba(0,0,0,0.35)] animate-fade-in"
               style={{ animation: "fade-in 0.6s ease-out, float 6s ease-in-out infinite" }}
-            >
-              <img
-                src={current.url}
-                alt={current.caption}
-                className="w-full aspect-[4/3] object-cover transition-transform duration-700 group-hover:scale-[1.02]"
-              />
-            </figure>
+           >
+          <img
+            src={current.url}
+              alt={current.caption}
+          className="w-full h-auto transition-transform duration-700 group-hover:scale-[1.02]"
+             />
+              </figure>
+            
           </button>
 
           <p className="mt-5 text-center font-serif italic text-lg md:text-xl text-foreground/80">
