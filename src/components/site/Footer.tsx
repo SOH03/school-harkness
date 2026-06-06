@@ -1,4 +1,4 @@
-import { Facebook } from "lucide-react";
+import { Facebook, Instagram } from "lucide-react";
 
 export function Footer() {
   return (
@@ -20,6 +20,16 @@ export function Footer() {
           >
             <Facebook className="h-4 w-4" />
             <span>Follow us on Facebook</span>
+          </a>
+          <a
+            href="https://www.instagram.com/nghs.batch21?igsh=MXVhMWJzcjE0MHFsag=="
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Follow us on Instagram"
+            className="flex items-center gap-2 text-sm hover:text-primary transition-colors"
+          >
+            <Instagram className="h-4 w-4" />
+            <span>Follow us on Instagram</span>
           </a>
           <p className="text-xs uppercase tracking-widest text-muted-foreground">
             © {new Date().getFullYear()} · Made with care by SOH-03

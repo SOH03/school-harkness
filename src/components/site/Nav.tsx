@@ -1,4 +1,4 @@
-import { Facebook } from "lucide-react";
+import { Facebook, Instagram } from "lucide-react";
 
 export function Nav() {
   const links = [
@@ -30,6 +30,15 @@ export function Nav() {
             className="h-9 w-9 grid place-items-center rounded-full border border-foreground hover:bg-foreground hover:text-background transition"
           >
             <Facebook className="h-4 w-4" />
+          </a>
+          <a
+            href="https://www.instagram.com/nghs.batch21?igsh=MXVhMWJzcjE0MHFsag=="
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+            className="h-9 w-9 grid place-items-center rounded-full border border-foreground hover:bg-foreground hover:text-background transition"
+          >
+            <Instagram className="h-4 w-4" />
           </a>
           <a
             href="#upcoming"
