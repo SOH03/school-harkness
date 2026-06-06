@@ -9,12 +9,12 @@ import g6 from "@/assets/gallery-6.jpg";
 import { PhotoLightbox } from "./PhotoLightbox";
 
 const photos = [
-  { url: g1, caption: "Graduation, 2021" },
-  { url: g2, caption: "Last day of class" },
-  { url: g3, caption: "Sports Day finals" },
-  { url: g4, caption: "Annual cultural night" },
-  { url: g5, caption: "Reunion dinner, 2023" },
-  { url: g6, caption: "Farewell, see you soon" },
+  { url: g1, caption: "Day and Morning shift" },
+  { url: g2, caption: "Iftar party 2025" },
+  { url: g3, caption: "Solitary Wolves,Champion" },
+  { url: g4, caption: "Iftar party 2026" },
+  { url: g5, caption: "Rag day and other reunions " },
+  { url: g6, caption: "Iftar party 2025" },
 ];
 
 export function Gallery() {
