@@ -1,6 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { useState } from "react";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
+import { PhotoLightbox } from "@/components/site/PhotoLightbox";
 import { useEvent } from "@/lib/use-firebase-data";
 import { sampleEvents } from "@/lib/events-data";
 
