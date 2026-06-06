@@ -22,7 +22,7 @@ export function Footer() {
             <span>Follow us on Facebook</span>
           </a>
           <p className="text-xs uppercase tracking-widest text-muted-foreground">
-            © {new Date().getFullYear()} · Made with care by SOH03
+            © {new Date().getFullYear()} · Made with care by SOH-03
           </p>
         </div>
       </div>
