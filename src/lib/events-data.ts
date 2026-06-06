@@ -29,8 +29,8 @@ export const sampleEvents: EventItem[] = [
       "An evening of faith, friendship, and togetherness.🌙",
     cover: g6,
     photos: [
-      { id: "1", url: g6, caption: "Farewell, see you soon" },
-      { id: "2", url: g2, caption: "Last day of class" },
+      { id: "1", url: g6, caption: "Iftar 2025" },
+      { id: "2", url: g2, caption: "Iftar 2025" },
     ],
   },
   {
@@ -42,7 +42,7 @@ export const sampleEvents: EventItem[] = [
     description:
       "Different years, same faces, same friendship. Batch 21, together through time.",
     cover: g5,
-    photos: [{ id: "1", url: g5, caption: "Reunion dinner, 2023" }],
+    photos: [{ id: "1", url: g5, caption: "Rag day and reunions" }],
   },
   {
     id: "cricket-2026",
@@ -53,7 +53,8 @@ export const sampleEvents: EventItem[] = [
     description:
       "Solitary Wolves,Champion - NGHS Batch'21 Futsal Tournament, Season 1",
     cover: g3,
-    photos: [{ id: "1", url: g3, caption: "Tournament  Day finals" }],
+    photos: [{ id: "1", url: g3, caption: "Tournament Champions 
+      " }],
   },
   {
     id: "iftar-2026",
@@ -65,8 +66,8 @@ export const sampleEvents: EventItem[] = [
       "Breaking fast together, exchanging stories — the kind of event you don't want to end.",
     cover: g4,
     photos: [
-      { id: "1", url: g4, caption: "Annual cultural night" },
-      { id: "2", url: g1, caption: "Graduation, 2021" },
+      { id: "1", url: g4, caption: "Iftar 2026" },
+      { id: "2", url: g1, caption: "Day and morning shift" },
     ],
   },
 ];
