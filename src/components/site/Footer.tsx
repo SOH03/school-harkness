@@ -1,3 +1,5 @@
+import { Facebook } from "lucide-react";
+
 export function Footer() {
   return (
     <footer className="border-t border-border">
@@ -8,9 +10,21 @@ export function Footer() {
             Nilphamari Govt High School — a Batch archive, kept by the class itself.
           </p>
         </div>
-        <p className="text-xs uppercase tracking-widest text-muted-foreground">
-          © {new Date().getFullYear()} · Made with care by SOH03
-        </p>
+        <div className="flex flex-col md:items-end items-center gap-3">
+          <a
+            href="https://www.facebook.com/profile.php?id=61582187578509"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Follow us on Facebook"
+            className="flex items-center gap-2 text-sm hover:text-primary transition-colors"
+          >
+            <Facebook className="h-4 w-4" />
+            <span>Follow us on Facebook</span>
+          </a>
+          <p className="text-xs uppercase tracking-widest text-muted-foreground">
+            © {new Date().getFullYear()} · Made with care by SOH03
+          </p>
+        </div>
       </div>
     </footer>
   );

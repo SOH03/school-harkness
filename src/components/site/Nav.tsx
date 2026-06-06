@@ -1,3 +1,5 @@
+import { Facebook } from "lucide-react";
+
 export function Nav() {
   const links = [
     { href: "#home", label: "Home" },
@@ -19,12 +21,23 @@ export function Nav() {
             </a>
           ))}
         </nav>
-        <a
-          href="#upcoming"
-          className="text-xs uppercase tracking-widest border border-foreground rounded-full px-4 py-2 hover:bg-foreground hover:text-background transition"
-        >
-          Join Reunion
-        </a>
+        <div className="flex items-center gap-3">
+          <a
+            href="https://www.facebook.com/profile.php?id=61582187578509"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Facebook"
+            className="h-9 w-9 grid place-items-center rounded-full border border-foreground hover:bg-foreground hover:text-background transition"
+          >
+            <Facebook className="h-4 w-4" />
+          </a>
+          <a
+            href="#upcoming"
+            className="text-xs uppercase tracking-widest border border-foreground rounded-full px-4 py-2 hover:bg-foreground hover:text-background transition"
+          >
+            Join Reunion
+          </a>
+        </div>
       </div>
     </header>
   );

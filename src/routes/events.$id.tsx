@@ -1,6 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { useState } from "react";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
+import { PhotoLightbox } from "@/components/site/PhotoLightbox";
 import { useEvent } from "@/lib/use-firebase-data";
 import { sampleEvents } from "@/lib/events-data";
 
@@ -28,8 +30,15 @@ export const Route = createFileRoute("/events/$id")({
 function EventDetail() {
   const { id } = Route.useParams();
   const event = useEvent(id);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   if (!event) throw notFound();
+
+  const openAt = (n: number) => {
+    setLightboxIndex(n);
+    setLightboxOpen(true);
+  };
 
   return (
     <main className="min-h-screen bg-background text-foreground">
@@ -64,8 +73,14 @@ function EventDetail() {
             <p className="text-muted-foreground">No photos yet.</p>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-              {event.photos.map((p) => (
-                <figure key={p.id} className="group relative overflow-hidden rounded-lg bg-muted">
+              {event.photos.map((p, n) => (
+                <button
+                  key={p.id}
+                  type="button"
+                  onClick={() => openAt(n)}
+                  className="group relative overflow-hidden rounded-lg bg-muted text-left"
+                  aria-label={`Open photo: ${p.caption || "photo"}`}
+                >
                   <img
                     src={p.url}
                     alt={p.caption}
@@ -73,16 +88,25 @@ function EventDetail() {
                     className="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   {p.caption && (
-                    <figcaption className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/70 to-transparent text-white text-xs md:text-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/70 to-transparent text-white text-xs md:text-sm opacity-0 group-hover:opacity-100 transition-opacity">
                       {p.caption}
-                    </figcaption>
+                    </span>
                   )}
-                </figure>
+                </button>
               ))}
             </div>
           )}
         </section>
       </article>
+
+      <PhotoLightbox
+        photos={event.photos.map((p) => ({ url: p.url, caption: p.caption }))}
+        index={lightboxIndex}
+        onIndexChange={setLightboxIndex}
+        open={lightboxOpen}
+        onOpenChange={setLightboxOpen}
+      />
+
       <Footer />
     </main>
   );
