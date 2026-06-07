@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { collection, doc, getDoc, getDocs, orderBy, query } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { onAuthStateChanged, type User } from "firebase/auth";
 import { auth, db, firebaseEnabled } from "./firebase";
 import { sampleEvents, type EventItem } from "./events-data";
