@@ -134,27 +134,17 @@ function AuthForm() {
 
 function Dashboard() {
   const [events, setEvents] = useState<EventItem[]>([]);
-  const [landingUrl, setLandingUrl] = useState("");
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     (async () => {
       const snap = await getDocs(collection(db!, "events"));
       setEvents(snap.docs.map((d) => ({ id: d.id, slug: d.id, ...(d.data() as any) })));
-      try {
-        const s = await getDoc(doc(db!, "settings", "site"));
-        setLandingUrl((s.data() as any)?.landingPhoto ?? "");
-      } catch {}
     })();
   }, [refreshKey]);
 
   return (
     <div className="space-y-12">
-      <section>
-        <h2 className="font-display text-2xl mb-4">Landing photo</h2>
-        <LandingPhotoEditor current={landingUrl} onSaved={() => setRefreshKey((k) => k + 1)} />
-      </section>
-
       <section>
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-display text-2xl">Events</h2>
