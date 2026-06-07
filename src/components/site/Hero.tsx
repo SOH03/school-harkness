@@ -1,7 +1,6 @@
-import { useLandingPhoto } from "@/lib/use-firebase-data";
+import building from "@/assets/school-building.png";
 
 export function Hero() {
-  const building = useLandingPhoto();
   return (
     <section id="home" className="relative overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 pt-12 pb-24 md:pt-20 md:pb-32 grid md:grid-cols-2 gap-12 items-center">

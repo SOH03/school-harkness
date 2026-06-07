@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import g1 from "@/assets/gallery-1.jpg";
 import g2 from "@/assets/gallery-2.jpg";
@@ -7,8 +7,9 @@ import g4 from "@/assets/gallery-4.jpg";
 import g5 from "@/assets/gallery-5.jpg";
 import g6 from "@/assets/gallery-6.jpg";
 import { PhotoLightbox } from "./PhotoLightbox";
+import { useEvents } from "@/lib/use-firebase-data";
 
-const photos = [
+const fallbackPhotos = [
   { url: g1, caption: "Day and Morning shift" },
   { url: g2, caption: "Iftar party 2025" },
   { url: g3, caption: "Solitary Wolves,Champion" },
@@ -18,17 +19,29 @@ const photos = [
 ];
 
 export function Gallery() {
+  const { events } = useEvents();
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
   const [openLightbox, setOpenLightbox] = useState(false);
 
+  const photos = useMemo(() => {
+    const eventPhotos = events.flatMap((e) =>
+      (e.photos ?? []).map((p) => ({ url: p.url, caption: p.caption || e.title })),
+    );
+    return eventPhotos.length > 0 ? eventPhotos : fallbackPhotos;
+  }, [events]);
+
   useEffect(() => {
-    if (paused || openLightbox) return;
+    if (i >= photos.length) setI(0);
+  }, [photos.length, i]);
+
+  useEffect(() => {
+    if (paused || openLightbox || photos.length <= 1) return;
     const t = setInterval(() => setI((p) => (p + 1) % photos.length), 4000);
     return () => clearInterval(t);
-  }, [paused, openLightbox]);
+  }, [paused, openLightbox, photos.length]);
 
-  const current = photos[i];
+  const current = photos[i] ?? photos[0];
 
   return (
     <section id="gallery" className="border-t border-border">
@@ -53,17 +66,16 @@ export function Gallery() {
             aria-label="View photo"
           >
             <figure
-             key={i}
-               className="relative overflow-hidden rounded-xl bg-muted shadow-[0_30px_60px_-20px_rgba(0,0,0,0.35)] animate-fade-in"
+              key={i}
+              className="relative overflow-hidden rounded-xl bg-muted shadow-[0_30px_60px_-20px_rgba(0,0,0,0.35)] animate-fade-in"
               style={{ animation: "fade-in 0.6s ease-out, float 6s ease-in-out infinite" }}
-           >
-          <img
-            src={current.url}
-              alt={current.caption}
-          className="w-full h-auto transition-transform duration-700 group-hover:scale-[1.02]"
-             />
-              </figure>
-            
+            >
+              <img
+                src={current.url}
+                alt={current.caption}
+                className="w-full h-auto transition-transform duration-700 group-hover:scale-[1.02]"
+              />
+            </figure>
           </button>
 
           <p className="mt-5 text-center font-serif italic text-lg md:text-xl text-foreground/80">
@@ -85,18 +97,20 @@ export function Gallery() {
             <ChevronRight className="h-5 w-5" />
           </button>
 
-          <div className="mt-6 flex items-center justify-center gap-2">
-            {photos.map((_, n) => (
-              <button
-                key={n}
-                onClick={() => setI(n)}
-                aria-label={`Go to photo ${n + 1}`}
-                className={`h-2 rounded-full transition-all ${
-                  n === i ? "w-8 bg-primary" : "w-2 bg-muted-foreground/40 hover:bg-muted-foreground"
-                }`}
-              />
-            ))}
-          </div>
+          {photos.length > 1 && photos.length <= 20 && (
+            <div className="mt-6 flex items-center justify-center gap-2 flex-wrap">
+              {photos.map((_, n) => (
+                <button
+                  key={n}
+                  onClick={() => setI(n)}
+                  aria-label={`Go to photo ${n + 1}`}
+                  className={`h-2 rounded-full transition-all ${
+                    n === i ? "w-8 bg-primary" : "w-2 bg-muted-foreground/40 hover:bg-muted-foreground"
+                  }`}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
