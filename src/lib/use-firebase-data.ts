@@ -34,26 +34,20 @@ export function useEvents() {
 }
 
 export function useEvent(id: string) {
-  const [event, setEvent] = useState<EventItem | null>(
-    sampleEvents.find((e) => e.slug === id) ?? null,
-  );
+  const [event, setEvent] = useState<EventItem | null>(null);
+  const [loading, setLoading] = useState(true);  // ← start true
 
   useEffect(() => {
-    if (!firebaseEnabled || !db) return;
-    (async () => {
-      try {
-        const snap = await getDoc(doc(db, "events", id));
-        if (snap.exists()) setEvent({ id: snap.id, slug: snap.id, ...(snap.data() as any) });
-      } catch (e) {
-        console.error(e);
-      }
-    })();
+    setLoading(true);
+    getDoc(doc(db!, "events", id)).then((snap) => {
+      if (snap.exists()) setEvent({ id: snap.id, slug: snap.id, ...snap.data() as any });
+      else setEvent(null);
+    }).finally(() => setLoading(false));  // ← always clear loading
   }, [id]);
 
-  return event;
+  return { event, loading };  // ← return both
 }
-
-export function useLandingPhoto() {
+ export function useLandingPhoto() {
   const [url, setUrl] = useState<string>(building);
 
   useEffect(() => {
