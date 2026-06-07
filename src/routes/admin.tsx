@@ -9,7 +9,6 @@ import {
   collection,
   deleteDoc,
   doc,
-  getDoc,
   getDocs,
   setDoc,
   updateDoc,
@@ -134,27 +133,17 @@ function AuthForm() {
 
 function Dashboard() {
   const [events, setEvents] = useState<EventItem[]>([]);
-  const [landingUrl, setLandingUrl] = useState("");
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     (async () => {
       const snap = await getDocs(collection(db!, "events"));
       setEvents(snap.docs.map((d) => ({ id: d.id, slug: d.id, ...(d.data() as any) })));
-      try {
-        const s = await getDoc(doc(db!, "settings", "site"));
-        setLandingUrl((s.data() as any)?.landingPhoto ?? "");
-      } catch {}
     })();
   }, [refreshKey]);
 
   return (
     <div className="space-y-12">
-      <section>
-        <h2 className="font-display text-2xl mb-4">Landing photo</h2>
-        <LandingPhotoEditor current={landingUrl} onSaved={() => setRefreshKey((k) => k + 1)} />
-      </section>
-
       <section>
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-display text-2xl">Events</h2>
@@ -176,44 +165,6 @@ function Dashboard() {
   );
 }
 
-function LandingPhotoEditor({ current, onSaved }: { current: string; onSaved: () => void }) {
-  const [url, setUrl] = useState(current);
-  const [busy, setBusy] = useState(false);
-  useEffect(() => setUrl(current), [current]);
-
-  const save = async () => {
-    if (!url) return;
-    setBusy(true);
-    try {
-      await setDoc(doc(db!, "settings", "site"), { landingPhoto: url }, { merge: true });
-      onSaved();
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  return (
-    <div className="rounded-md border border-border p-4 space-y-3">
-      <div className="flex items-center gap-4 flex-wrap">
-        {url ? (
-          <img src={url} alt="Current landing" className="h-20 w-20 object-cover rounded" />
-        ) : (
-          <div className="h-20 w-20 grid place-items-center rounded bg-muted text-xs">none</div>
-        )}
-        <Input
-          placeholder="Paste image URL (e.g. https://i.imgur.com/...jpg)"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          className="flex-1 min-w-[260px]"
-        />
-        <Button onClick={save} disabled={!url || busy}>{busy ? "Saving…" : "Save"}</Button>
-      </div>
-      <p className="text-xs text-muted-foreground">
-        Tip: upload your image to Imgur, Cloudinary, Google Drive (shared link), or any host and paste the direct URL.
-      </p>
-    </div>
-  );
-}
 
 function NewEvent({ onCreated }: { onCreated: () => void }) {
   const [form, setForm] = useState({ slug: "", title: "", year: "", date: "", description: "" });
@@ -300,9 +251,17 @@ function EventEditor({ event, onChanged }: { event: EventItem; onChanged: () => 
     onChanged();
   };
 
+  const setAsCover = async (url: string) => {
+    await updateDoc(doc(db!, "events", event.id), { cover: url });
+    onChanged();
+  };
+
   const deletePhoto = async (photoId: string) => {
+    const removed = photos.find((p) => p.id === photoId);
     const next = photos.filter((p) => p.id !== photoId);
-    await updateDoc(doc(db!, "events", event.id), { photos: next });
+    const patch: any = { photos: next };
+    if (removed && event.cover === removed.url) patch.cover = next[0]?.url ?? "";
+    await updateDoc(doc(db!, "events", event.id), patch);
     onChanged();
   };
 
@@ -310,7 +269,7 @@ function EventEditor({ event, onChanged }: { event: EventItem; onChanged: () => 
     <div className="rounded-md border border-border p-5 space-y-4">
       <div className="grid md:grid-cols-3 gap-3">
         <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
-        <Input value={date} onChange={(e) => setDate(e.target.value)} placeholder="Date" />
+        <Input value={date} onChange={(e) => setDate(e.target.value)} placeholder="Date (e.g. March 2024)" />
         <div className="text-xs text-muted-foreground self-center">slug: <code>{event.slug}</code></div>
       </div>
       <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" />
@@ -322,17 +281,32 @@ function EventEditor({ event, onChanged }: { event: EventItem; onChanged: () => 
       <div className="border-t border-border pt-4">
         <h3 className="font-medium mb-3">Photos ({photos.length})</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
-          {photos.map((p) => (
-            <div key={p.id} className="space-y-2">
-              <img src={p.url} alt={p.caption} className="aspect-square w-full object-cover rounded" />
-              <Input
-                defaultValue={p.caption}
-                onBlur={(e) => { if (e.target.value !== p.caption) updateCaption(p.id, e.target.value); }}
-                placeholder="Caption"
-              />
-              <Button size="sm" variant="outline" onClick={() => deletePhoto(p.id)}>Remove</Button>
-            </div>
-          ))}
+          {photos.map((p) => {
+            const isCover = event.cover === p.url;
+            return (
+              <div key={p.id} className="space-y-2">
+                <div className="relative">
+                  <img src={p.url} alt={p.caption} className="aspect-square w-full object-cover rounded" />
+                  {isCover && (
+                    <span className="absolute top-1 left-1 text-[10px] uppercase tracking-wider bg-primary text-primary-foreground px-2 py-0.5 rounded">
+                      Cover
+                    </span>
+                  )}
+                </div>
+                <Input
+                  defaultValue={p.caption}
+                  onBlur={(e) => { if (e.target.value !== p.caption) updateCaption(p.id, e.target.value); }}
+                  placeholder="Caption"
+                />
+                <div className="flex gap-2 flex-wrap">
+                  {!isCover && (
+                    <Button size="sm" variant="secondary" onClick={() => setAsCover(p.url)}>Set cover</Button>
+                  )}
+                  <Button size="sm" variant="outline" onClick={() => deletePhoto(p.id)}>Remove</Button>
+                </div>
+              </div>
+            );
+          })}
         </div>
         <div className="grid md:grid-cols-[1fr_1fr_auto] gap-2">
           <Input value={photoUrl} onChange={(e) => setPhotoUrl(e.target.value)} placeholder="Photo URL (https://...)" />
