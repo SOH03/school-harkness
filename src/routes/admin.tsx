@@ -166,44 +166,6 @@ function Dashboard() {
   );
 }
 
-function LandingPhotoEditor({ current, onSaved }: { current: string; onSaved: () => void }) {
-  const [url, setUrl] = useState(current);
-  const [busy, setBusy] = useState(false);
-  useEffect(() => setUrl(current), [current]);
-
-  const save = async () => {
-    if (!url) return;
-    setBusy(true);
-    try {
-      await setDoc(doc(db!, "settings", "site"), { landingPhoto: url }, { merge: true });
-      onSaved();
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  return (
-    <div className="rounded-md border border-border p-4 space-y-3">
-      <div className="flex items-center gap-4 flex-wrap">
-        {url ? (
-          <img src={url} alt="Current landing" className="h-20 w-20 object-cover rounded" />
-        ) : (
-          <div className="h-20 w-20 grid place-items-center rounded bg-muted text-xs">none</div>
-        )}
-        <Input
-          placeholder="Paste image URL (e.g. https://i.imgur.com/...jpg)"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          className="flex-1 min-w-[260px]"
-        />
-        <Button onClick={save} disabled={!url || busy}>{busy ? "Saving…" : "Save"}</Button>
-      </div>
-      <p className="text-xs text-muted-foreground">
-        Tip: upload your image to Imgur, Cloudinary, Google Drive (shared link), or any host and paste the direct URL.
-      </p>
-    </div>
-  );
-}
 
 function NewEvent({ onCreated }: { onCreated: () => void }) {
   const [form, setForm] = useState({ slug: "", title: "", year: "", date: "", description: "" });
