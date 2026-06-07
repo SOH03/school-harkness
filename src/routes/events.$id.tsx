@@ -27,14 +27,23 @@ export const Route = createFileRoute("/events/$id")({
   notFoundComponent: () => <div className="p-10 text-center">Event not found.</div>,
 });
 
-function EventDetail() {
+ function EventDetail() {
   const { id } = Route.useParams();
-  const event = useEvent(id);
+  const { event, loading } = useEvent(id);  // ← update useEvent to return {event, loading}
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  if (!event) throw notFound();
+  if (loading) return (
+    <main className="min-h-screen bg-background text-foreground">
+      <Nav />
+      <div className="flex items-center justify-center py-40 text-muted-foreground">
+        Loading…
+      </div>
+      <Footer />
+    </main>
+  );
 
+  if (!event) throw notFound();
   const openAt = (n: number) => {
     setLightboxIndex(n);
     setLightboxOpen(true);
