@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { collection, doc, getDoc, getDocs, orderBy, query } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { onAuthStateChanged, type User } from "firebase/auth";
 import { auth, db, firebaseEnabled } from "./firebase";
 import { sampleEvents, type EventItem } from "./events-data";
@@ -13,12 +13,15 @@ export function useEvents() {
     if (!firebaseEnabled || !db) return;
     (async () => {
       try {
-        const snap = await getDocs(query(collection(db, "events"), orderBy("year", "asc")));
-        if (!snap.empty) {
-          setEvents(
-            snap.docs.map((d) => ({ id: d.id, slug: d.id, ...(d.data() as any) })) as EventItem[],
-          );
-        }
+        const snap = await getDocs(collection(db, "events"));
+        const remote = snap.docs.map(
+          (d) => ({ id: d.id, slug: d.id, ...(d.data() as any) }) as EventItem,
+        );
+        // Hardcoded sample events stay first; admin-created events come after.
+        // Skip any Firestore doc whose id matches a sample slug to avoid duplicates.
+        const sampleIds = new Set(sampleEvents.map((e) => e.id));
+        const extras = remote.filter((e) => !sampleIds.has(e.id));
+        setEvents([...sampleEvents, ...extras]);
       } catch (e) {
         console.error(e);
       } finally {
