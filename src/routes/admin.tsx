@@ -252,9 +252,17 @@ function EventEditor({ event, onChanged }: { event: EventItem; onChanged: () => 
     onChanged();
   };
 
+  const setAsCover = async (url: string) => {
+    await updateDoc(doc(db!, "events", event.id), { cover: url });
+    onChanged();
+  };
+
   const deletePhoto = async (photoId: string) => {
+    const removed = photos.find((p) => p.id === photoId);
     const next = photos.filter((p) => p.id !== photoId);
-    await updateDoc(doc(db!, "events", event.id), { photos: next });
+    const patch: any = { photos: next };
+    if (removed && event.cover === removed.url) patch.cover = next[0]?.url ?? "";
+    await updateDoc(doc(db!, "events", event.id), patch);
     onChanged();
   };
 
@@ -262,7 +270,7 @@ function EventEditor({ event, onChanged }: { event: EventItem; onChanged: () => 
     <div className="rounded-md border border-border p-5 space-y-4">
       <div className="grid md:grid-cols-3 gap-3">
         <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
-        <Input value={date} onChange={(e) => setDate(e.target.value)} placeholder="Date" />
+        <Input value={date} onChange={(e) => setDate(e.target.value)} placeholder="Date (e.g. March 2024)" />
         <div className="text-xs text-muted-foreground self-center">slug: <code>{event.slug}</code></div>
       </div>
       <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" />
@@ -274,17 +282,32 @@ function EventEditor({ event, onChanged }: { event: EventItem; onChanged: () => 
       <div className="border-t border-border pt-4">
         <h3 className="font-medium mb-3">Photos ({photos.length})</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
-          {photos.map((p) => (
-            <div key={p.id} className="space-y-2">
-              <img src={p.url} alt={p.caption} className="aspect-square w-full object-cover rounded" />
-              <Input
-                defaultValue={p.caption}
-                onBlur={(e) => { if (e.target.value !== p.caption) updateCaption(p.id, e.target.value); }}
-                placeholder="Caption"
-              />
-              <Button size="sm" variant="outline" onClick={() => deletePhoto(p.id)}>Remove</Button>
-            </div>
-          ))}
+          {photos.map((p) => {
+            const isCover = event.cover === p.url;
+            return (
+              <div key={p.id} className="space-y-2">
+                <div className="relative">
+                  <img src={p.url} alt={p.caption} className="aspect-square w-full object-cover rounded" />
+                  {isCover && (
+                    <span className="absolute top-1 left-1 text-[10px] uppercase tracking-wider bg-primary text-primary-foreground px-2 py-0.5 rounded">
+                      Cover
+                    </span>
+                  )}
+                </div>
+                <Input
+                  defaultValue={p.caption}
+                  onBlur={(e) => { if (e.target.value !== p.caption) updateCaption(p.id, e.target.value); }}
+                  placeholder="Caption"
+                />
+                <div className="flex gap-2 flex-wrap">
+                  {!isCover && (
+                    <Button size="sm" variant="secondary" onClick={() => setAsCover(p.url)}>Set cover</Button>
+                  )}
+                  <Button size="sm" variant="outline" onClick={() => deletePhoto(p.id)}>Remove</Button>
+                </div>
+              </div>
+            );
+          })}
         </div>
         <div className="grid md:grid-cols-[1fr_1fr_auto] gap-2">
           <Input value={photoUrl} onChange={(e) => setPhotoUrl(e.target.value)} placeholder="Photo URL (https://...)" />
