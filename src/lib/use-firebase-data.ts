@@ -35,19 +35,47 @@ export function useEvents() {
 
 export function useEvent(id: string) {
   const [event, setEvent] = useState<EventItem | null>(null);
-  const [loading, setLoading] = useState(true);  // ← start true
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // 1. FIRST: check sample events (LOCAL DATA)
+    const local = sampleEvents.find(
+      (e) => e.slug === id || e.id === id
+    );
+
+    if (local) {
+      setEvent(local);
+      setLoading(false);
+      return;
+    }
+
+    // 2. THEN: check Firebase (if enabled)
+    if (!firebaseEnabled || !db) {
+      setEvent(null);
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
-    getDoc(doc(db!, "events", id)).then((snap) => {
-      if (snap.exists()) setEvent({ id: snap.id, slug: snap.id, ...snap.data() as any });
-      else setEvent(null);
-    }).finally(() => setLoading(false));  // ← always clear loading
+
+    getDoc(doc(db, "events", id))
+      .then((snap) => {
+        if (snap.exists()) {
+          setEvent({
+            id: snap.id,
+            slug: snap.id,
+            ...(snap.data() as any),
+          });
+        } else {
+          setEvent(null);
+        }
+      })
+      .finally(() => setLoading(false));
   }, [id]);
 
-  return { event, loading };  // ← return both
-}
- export function useLandingPhoto() {
+  return { event, loading };
+                                              }
+export function useLandingPhoto() {
   const [url, setUrl] = useState<string>(building);
 
   useEffect(() => {
